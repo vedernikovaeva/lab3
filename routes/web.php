@@ -10,7 +10,7 @@ Route::get('/', function () {
 });
 
 Route::get('/', function () {
-    return redirect('/employees'); // Перенаправляє на список співробітників
+    return redirect('/employees'); 
 });
 
 Route::resource('employees', EmployeeController::class);
