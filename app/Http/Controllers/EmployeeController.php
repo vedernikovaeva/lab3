@@ -38,6 +38,9 @@ class EmployeeController extends Controller
             'children' => 'required|integer|min:0',
             'experience' => 'required|integer|min:0',
         ]);
+        $employee = Employee::create(array_merge($validatedData, [
+            'creator_user_id' => auth()->id(),
+        ]));
 
         Employee::create($validated);
 
@@ -77,7 +80,12 @@ class EmployeeController extends Controller
 
         $employee = Employee::findOrFail($id);
         $employee->update($validated);
+        $this->authorize('update', $employee);
+        if ($employee->creator_user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
 
+        $employee->update($request->all());
         return redirect()->route('employees.index')->with('success', 'Employee updated successfully!');
     }
 
@@ -88,6 +96,7 @@ class EmployeeController extends Controller
     {
         $employee = Employee::findOrFail($id);
         $employee->delete();
+        $this->authorize('delete', $employee);
 
         return redirect()->route('employees.index')->with('success', 'Employee deleted successfully!');
     }

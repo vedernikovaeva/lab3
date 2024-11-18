@@ -16,4 +16,10 @@ class Employee extends Model
         'children', 
         'experience'
     ];
+
+    public function creator()
+{
+    return $this->belongsTo(User::class, 'creator_user_id');
+}
+
 }

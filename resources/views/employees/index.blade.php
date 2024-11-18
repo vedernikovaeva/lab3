@@ -19,6 +19,7 @@
             <td>${{ $employee->salary }}</td>
             <td>{{ $employee->children }}</td>
             <td>{{ $employee->experience }} years</td>
+            <td>{{ $employee->creator->name ?? 'N/A' }}</td>
             <td>
                 <a href="{{ route('employees.show', $employee->id) }}">View</a>
                 <a href="{{ route('employees.edit', $employee->id) }}">Edit</a>

@@ -19,6 +19,7 @@ return new class extends Migration
         $table->integer('children')->default(0);
         $table->integer('experience')->default(0);
         $table->timestamps();
+        $table->foreignId('creator_user_id')->nullable()->constrained('users')->onDelete('cascade');
     });
     }
 
@@ -28,5 +29,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('employees');
+        Schema::table('employees', function (Blueprint $table) {
+            $table->dropForeign(['creator_user_id']);
+            $table->dropColumn('creator_user_id');
+        });
     }
 };
